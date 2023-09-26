@@ -16,6 +16,9 @@ await mongoose
 app.get("/", (req, res) => {
   res.send("hello world");
 });
+app.post("/transacation", (req, res) => {
+  res.json({message:"hello world"});
+});
 app.listen(PORT, () => {
   console.log(`server running under port ${PORT}`);
 });

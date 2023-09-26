@@ -9,9 +9,11 @@ function App() {
     e.preventDefault();
    const res= await fetch('http://localhost:4000/transacation',{
       method :"POST",
-      body: form,
+      body: JSON.stringify(form),
+
     })
-    console.log(res)
+    const data = await res.json()
+    console.log(data)
   }
   function handleInput(e) {
     setForm({ ...form, [e.target.name]: e.target.value });

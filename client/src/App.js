@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
+const initialForm ={ amount: 0,
+  description: "",
+  date: "",}
 
 function App() {
-  const [form, setForm] = useState({
-    amount: 0,
-    description: "",
-    date: "",
-  });
+  const [form, setForm] = useState(initialForm);
   const [transactions, setTransactions] = useState([]);
   useEffect(() => {
     fetchTransction()
@@ -26,8 +25,11 @@ function App() {
     });
     // const data = await res.json();
     //  console.log(data);
-    
+    if(res.ok){
+       setForm(initialForm)
       fetchTransction()
+    }
+      
   
    
   }

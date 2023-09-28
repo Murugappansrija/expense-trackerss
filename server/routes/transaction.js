@@ -21,4 +21,12 @@ router.post("/", async (req, res) => {
       transaction,
     });
   });
+  router.delete('/:id',async(req,res)=>{
+     
+      await Transaction.findOneAndDelete({_id:req.params.id})
+      res.json({
+        success: true,
+        message:" deleted Succesfully"
+      })
+  })
 export default router

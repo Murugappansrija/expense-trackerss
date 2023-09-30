@@ -9,21 +9,40 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useEffect, useState } from "react";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 
 const initialForm = { amount: 0, description: "", date: new Date() };
 
-export default function TransactionForm({ fetchTransction }) {
+export default function TransactionForm({ fetchTransction, editTransaction }) {
   const [form, setForm] = useState(initialForm);
+
+  useEffect(() => {
+    if (editTransaction.amount !== undefined) {
+      setForm(editTransaction);
+     
+    }
+  }, [editTransaction]);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
+
   function handleDate(newValue) {
     setForm({ ...form, date: newValue });
   }
+
   async function handleSubmit(e) {
     e.preventDefault();
+    editTransaction.amount === undefined ? create() : update();
+   
+  }
+  function reLoad(res){
+    if (res.ok){
+      setForm(initialForm)
+      fetchTransction()
+    }
+  }
+  async function create() {
     const res = await fetch("http://localhost:4000/transaction", {
       method: "POST",
       body: JSON.stringify(form),
@@ -31,11 +50,21 @@ export default function TransactionForm({ fetchTransction }) {
         "content-type": "application/json",
       },
     });
+    reLoad(res);
+  }
 
-    if (res.ok) {
-      setForm(initialForm);
-      fetchTransction();
-    }
+  async function update() {
+    const res = await fetch(
+      `http://localhost:4000/transaction/${editTransaction._id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify(form),
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
+    reLoad(res);
   }
   return (
     <Card sx={{ minWidth: 275, marginTop: 10 }}>
@@ -61,7 +90,6 @@ export default function TransactionForm({ fetchTransction }) {
             name="description"
             value={form.description}
             onChange={handleChange}
-           
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             {/* <DesktopDatePicker
@@ -76,22 +104,29 @@ export default function TransactionForm({ fetchTransction }) {
             /> */}
             <DemoContainer components={["DesktopDatePicker"]} />
 
-            <DemoItem label="Desktop variant"    size="small">
+            <DemoItem label="Desktop variant" size="small">
               <DesktopDatePicker
-               onChange={handleDate} 
-                name = "date"
-                       
+                onChange={handleDate}
+                name="date"
                 defaultValue={dayjs("YYYY-MM-DD")}
               />
             </DemoItem>
-          
           </LocalizationProvider>
-
-          <Button variant="contained" type="submit">
-            Submit
-          </Button>
+          {editTransaction.amount !== undefined && (
+            <Button variant="contained" type="submit">
+              Update
+            </Button>
+          )}
+          {editTransaction.amount === undefined && (
+            <Button variant="contained" type="submit">
+              Submit
+            </Button>
+          )}
+        
         </form>
       </CardContent>
     </Card>
   );
 }
+
+

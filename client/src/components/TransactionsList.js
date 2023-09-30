@@ -15,18 +15,24 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import * as React from "react";
 
-export default function TransactionsList({ transactions, fetchTransction }) {
- async function remove(_id){
-if(!window.confirm('Are you sure  to delete this file ')) return
-const res = await fetch(`http://localhost:4000/transaction/${_id}`,{
-  method : 'DELETE',
-})
-if(res.ok){
-  fetchTransction()
-  window.alert('Deleted successfully')
-}
+export default function TransactionsList({
+  transactions,
+  fetchTransction,
+  setEdittransaction,
+}) {
+  async function remove(_id) {
+    if (!window.confirm("Are you sure  to delete this file ")) return;
+    const res = await fetch(`http://localhost:4000/transaction/${_id}`, {
+      method: "DELETE",
+    });
+    if (res.ok) {
+      fetchTransction();
+      window.alert("Deleted successfully");
+    }
   }
- 
+  function formatDate(date) {
+    return dayjs(date).format("DD-MMM-YYYY");
+  }
   return (
     <>
       <Typography sx={{ marginTop: 10 }} variant="h6">
@@ -54,15 +60,17 @@ if(res.ok){
                 </TableCell>
                 <TableCell align="center">{row.description}</TableCell>
 
-                <TableCell align="center">{row.date}</TableCell>
+                <TableCell align="center">{formatDate(row.date)}</TableCell>
                 <TableCell align="center">
-                 
-                  <IconButton   color="primary" component="label" >
-              
+                  <IconButton color="primary" component="label" onClick={()=> setEdittransaction(row)} >
                     <EditIcon />
                   </IconButton>
-                  <IconButton   color="warning" component="label" onClick={()=>remove(row._id)} >
-                    <DeleteIcon  />
+                  <IconButton
+                    color="warning"
+                    component="label"
+                    onClick={() => remove(row._id)}
+                  >
+                    <DeleteIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>

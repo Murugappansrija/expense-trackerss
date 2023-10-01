@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
 export default function ButtonAppBar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
-        <Toolbar>
+        {/* <Toolbar>
           <IconButton
             size="large"
             edge="start"
@@ -21,10 +22,23 @@ export default function ButtonAppBar() {
           >
             <MenuIcon />
           </IconButton>
+         */}
+         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Link to='/'  className='a-text'>
             Expensoo
+
+            </Link>
           </Typography>
+        
+          <Link to='/login' className='a-text'>
           <Button color="inherit">Login</Button>
+          </Link>
+          
+          <Link to='/register' className='a-text'>
+          <Button color="inherit">Register</Button>
+          </Link>
+         
         </Toolbar>
       </AppBar>
     </Box>

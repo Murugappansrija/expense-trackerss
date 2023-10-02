@@ -13,7 +13,7 @@ const Verification = ({ children }) => {
     }
   })
   setIsLoading(false)
-  if(res.ok){
+  if(!res.ok){
     redirect('/login')
   }
 }

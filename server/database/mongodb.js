@@ -1,7 +1,15 @@
 import mongoose from "mongoose";
-async  function database(){ await mongoose.connect(
-    "mongodb+srv://murugappansj:murugappansj123@cluster0.w6s1o7v.mongodb.net/expense-tracker"
-  );
-  console.log("db connected");
+// async  function database(){ await mongoose.connect( process.env.DB_URL );
+  
+//}
+const database =()=>{
+  mongoose.connect(process.env.db_url,{
+      useNewUrlParser:true,
+      useUnifiedTopology:true
+  }).then(()=>{
+    console.log('connected db')
+  }).catch((err)=>{
+    console.error(err)
+  })
 }
   export default database

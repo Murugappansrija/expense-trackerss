@@ -41,19 +41,19 @@ router.post("/login", async (req, res) => {
     });
     return;
   }
-  const comparePassword = bcrypt.compare(password, registeredUser.password);
+  const comparePassword = await bcrypt.compare(password, registeredUser.password);
   if (!comparePassword) {
-    res.status(406).json({
+    res.json({
       message: "Invalid Credentials",
     });
     return;
   }
   //create jwt token
   const payload = {
-  username:  email,
+   email,
     _id: registeredUser._id,
   };
-  const token = jwt.sign({payload}, "mysecret");
+  const token = jwt.sign(payload, process.env.JWT_SECRET);
   res.status(200).json({
     message: "Login successfully",
     token,

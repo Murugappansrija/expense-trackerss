@@ -10,25 +10,25 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Register from './pages/Register';
+import router from './routes'
 
-
-const router = createBrowserRouter([
-  {
-    element: <App/>,
-    children:[
-      {
-          path: '/',
-           element:<Home/>,         
-    },{
-      path: '/login',
-      element:<Login/>,
-    },{
-      path: '/register',
-      element:<Register/>,
-    }
-    ]
-  },
-]);
+// const router = createBrowserRouter([
+//   {
+//     element: <App/>,
+//     children:[
+//       {
+//           path: '/',
+//            element:<Home/>,         
+//     },{
+//       path: '/login',
+//       element:<Login/>,
+//     },{
+//       path: '/register',
+//       element:<Register/>,
+//     }
+//     ]
+//   },
+// ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

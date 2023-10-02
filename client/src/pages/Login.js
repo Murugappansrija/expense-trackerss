@@ -13,10 +13,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
+import Cookies from 'js-cookie'
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function SignIn() {
+  const navigate =  useNavigate()
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -24,7 +27,7 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     };
-  const res= await fetch('http://localhost:4000/auth/login',{
+  const res= await fetch(`${process.env.REACT_APP_API_URL}/auth/login`,{
    
     method : "POST",
     body: JSON.stringify(form),
@@ -32,8 +35,10 @@ export default function SignIn() {
       'content-type':"application/json"
     },
    })
+   const {token}= await res.json()
    if(res.ok){
-    console.log('done')
+    Cookies.set('token',token)
+    navigate('/')
    }
   };
 

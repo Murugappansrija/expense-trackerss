@@ -13,13 +13,14 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink , useNavigate} from 'react-router-dom';
 
 
 
 
 
 export default function Register() {
+  const navigate = useNavigate()
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -29,7 +30,7 @@ export default function Register() {
       email: data.get('email'),
       password: data.get('password'),
     }
-  const res= await  fetch('http://localhost:4000/auth/register',{
+  const res= await  fetch(`${process.env.REACT_APP_API_URL}/auth/register`,{
         method:'POST',
         body: JSON.stringify(form),
         headers:{
@@ -37,7 +38,7 @@ export default function Register() {
         }
     })
     if(res.ok){
-        console.log('succses')
+      navigate('/login')
     }
   };
 

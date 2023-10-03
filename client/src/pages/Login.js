@@ -15,10 +15,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../store/auth';
+import {useDispatch} from 'react-redux'
+
 
 
 
 export default function SignIn() {
+  const dispatch = useDispatch()
   const navigate =  useNavigate()
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,9 +39,10 @@ export default function SignIn() {
       'content-type':"application/json"
     },
    })
-   const {token}= await res.json()
+   const {token,registeredUser}= await res.json()
    if(res.ok){
     Cookies.set('token',token)
+    dispatch(getUser())
     navigate('/')
    }
   };

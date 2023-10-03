@@ -92,16 +92,7 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
             onChange={handleChange}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            {/* <DesktopDatePicker
-              label="Transaction Date"
-              inputFormat="MM/DD/YYYY"
-              value={form.date}
-              onChange={handleDate}
-              name = "date"
-              renderInput={(params) => (
-                <TextField sx={{ marginRight: 5 }} size="small" {...params} />
-              )}
-            /> */}
+          
             <DemoContainer components={["DesktopDatePicker"]} />
 
             <DemoItem label="Desktop variant" size="small">

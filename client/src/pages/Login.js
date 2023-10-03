@@ -42,7 +42,7 @@ export default function SignIn() {
    const {token,registeredUser}= await res.json()
    if(res.ok){
     Cookies.set('token',token)
-    dispatch(getUser())
+    dispatch(getUser(registeredUser))
     navigate('/')
    }
   };

@@ -3,7 +3,7 @@ import authReducer from './auth.js'
 
  const store = configureStore({
   reducer: {
-    auth : authReducer
+    auth:authReducer
   },
 })
 export default store

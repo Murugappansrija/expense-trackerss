@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const Verification = ({ children }) => {
   const auth = useSelector((state) => state.auth);
 
-return auth. isAuthenticated ? children : <Navigate to="/login" replace={true} />;
+return auth.isAuthenticated ? children : <Navigate to="/login" replace={true} />;
 
 };
 

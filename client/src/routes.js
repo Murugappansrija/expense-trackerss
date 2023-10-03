@@ -6,7 +6,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import Verification from "./utils/Verification";
 import Guest from "./utils/Guest";
-
+import Categories from "./pages/Categories";
 // const token = Cookies.get('token')
 
 export default createBrowserRouter([
@@ -35,6 +35,14 @@ export default createBrowserRouter([
           <Guest>
             <Register />
           </Guest>
+        )
+      },
+      {
+        path: "/category",
+        element: (
+          <Verification>
+            <Categories/>
+          </Verification>
         )
       },
     ],

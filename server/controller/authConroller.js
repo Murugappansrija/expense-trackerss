@@ -2,6 +2,15 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+// const categories= []
+const categories = [
+  { label: "Travel" , icon: "user"},
+  { label: "Food" , icon: "user"},
+  { label: "shooping", icon: "user" },
+  { label: "invesment", icon: "user" },
+  { label: "entertainment", icon: "user" },
+];
+
 export const registerController = async (req, res, next) => {
   const { email, password, firstName, lastName } = req.body;
 
@@ -23,6 +32,7 @@ export const registerController = async (req, res, next) => {
     password: hashedPassword,
     firstName,
     lastName,
+    categories,
   });
   res.status(201).json({
     success: true,

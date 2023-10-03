@@ -12,24 +12,19 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import Cookies from "js-cookie";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Box } from "@mui/material";
-
+import {useSelector} from 'react-redux'
 const initialForm = {
   amount: 0,
   description: "",
   date: new Date(),
-  category: "",
+  category_id: "",
 };
 
 export default function TransactionForm({ fetchTransction, editTransaction }) {
+  const {categories} = useSelector(state=>state.auth.user)
   const token = Cookies.get("token");
   const [form, setForm] = useState(initialForm);
-  const categories = [
-    { label: "Travel" },
-    { label: "Food" },
-    { label: "shooping" },
-    { label: "invesment" },
-    { label: "entertainment" },
-  ];
+  
 
   useEffect(() => {
     if (editTransaction.amount !== undefined) {
@@ -81,6 +76,9 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
     );
     reLoad(res);
   }
+  function getCategoryNameById(){
+    return categories.find((category) => category._id===form.category_id) ?? ""
+  }
   return (
     <Card sx={{ minWidth: 275, marginTop: 10 }}>
       <CardContent>
@@ -119,9 +117,10 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
             </DemoItem>
           </LocalizationProvider>
           <Autocomplete
-            value={form.category}
+            // value={form.category_id}
+            value={getCategoryNameById()}
             onChange={(event, newValue) => {
-              setForm({ ...form, category: newValue });
+              setForm({ ...form, category_id: newValue._id });
             }}
             // inputValue={form.category}
             // onInputChange={(event, newInputValue) => {

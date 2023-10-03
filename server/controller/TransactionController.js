@@ -10,12 +10,13 @@ export const index = async (req, res) => {
 
 export const createTransaction = async (req, res) => {
   console.log(req.user);
-  const { amount, description, date } = req.body;
+  const { amount, description, date,category_id } = req.body;
   const transaction = await Transaction.create({
     amount,
     description,
     user_id: req.user._id,
     date,
+    category_id,
   });
   console.log(req.body);
   res.status(200).json({

@@ -29,6 +29,9 @@ export default function ButtonAppBar() {
               Expensoo
             </Link>
           </Typography>
+          <Link to="/category" className="a-text">
+                <Button color="inherit">category</Button>
+              </Link>
           {isAuthenticated && (
             <Button color="inherit" onClick={totallogout}>
               Logout

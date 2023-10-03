@@ -9,6 +9,9 @@ description:{
     required:true,
     type:String
 },
+user_id:{
+ type: mongoose.Types.ObjectId
+},
 date:{
     required  : true,
     type : Date,

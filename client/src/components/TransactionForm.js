@@ -9,17 +9,31 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useEffect, useState } from "react";
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import Cookies from "js-cookie";
+import Autocomplete from "@mui/material/Autocomplete";
+import { Box } from "@mui/material";
 
-
-const initialForm = { amount: 0, description: "", date: new Date() };
+const initialForm = {
+  amount: 0,
+  description: "",
+  date: new Date(),
+  category: "",
+};
 
 export default function TransactionForm({ fetchTransction, editTransaction }) {
+  const token = Cookies.get("token");
   const [form, setForm] = useState(initialForm);
+  const categories = [
+    { label: "Travel" },
+    { label: "Food" },
+    { label: "shooping" },
+    { label: "invesment" },
+    { label: "entertainment" },
+  ];
 
   useEffect(() => {
     if (editTransaction.amount !== undefined) {
       setForm(editTransaction);
-     
     }
   }, [editTransaction]);
 
@@ -34,12 +48,11 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
   async function handleSubmit(e) {
     e.preventDefault();
     editTransaction.amount === undefined ? create() : update();
-   
   }
-  function reLoad(res){
-    if (res.ok){
-      setForm(initialForm)
-      fetchTransction()
+  function reLoad(res) {
+    if (res.ok) {
+      setForm(initialForm);
+      fetchTransction();
     }
   }
   async function create() {
@@ -48,6 +61,7 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
       body: JSON.stringify(form),
       headers: {
         "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     reLoad(res);
@@ -61,6 +75,7 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
         body: JSON.stringify(form),
         headers: {
           "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -70,7 +85,7 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
     <Card sx={{ minWidth: 275, marginTop: 10 }}>
       <CardContent>
         <Typography variant="h5">Add New Transaction</Typography>
-        <form onSubmit={handleSubmit}>
+        <Box component="form" onSubmit={handleSubmit} sx={{diplay:"flex"}}>
           <TextField
             sx={{ marginRight: 5 }}
             size="small"
@@ -91,18 +106,34 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
             value={form.description}
             onChange={handleChange}
           />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-          
-            <DemoContainer components={["DesktopDatePicker"]} />
+          <LocalizationProvider dateAdapter={AdapterDayjs}  >
+            <DemoContainer   components={["DesktopDatePicker"]} />
 
-            <DemoItem label="Desktop variant" size="small">
+            <DemoItem label="DATE" size="small">
               <DesktopDatePicker
+            
                 onChange={handleDate}
                 name="date"
                 defaultValue={dayjs("YYYY-MM-DD")}
               />
             </DemoItem>
           </LocalizationProvider>
+          <Autocomplete
+            value={form.category}
+            onChange={(event, newValue) => {
+              setForm({ ...form, category: newValue });
+            }}
+            // inputValue={form.category}
+            // onInputChange={(event, newInputValue) => {
+            //   setInputValue(newInputValue);
+            // }}
+            id="controllable-states-demo"
+            options={categories}
+            sx={{ width: 200 }}
+            renderInput={(params) => (
+              <TextField {...params} sx={{ marginRight: 5 }} size="small" label="Category"  />
+            )}
+          />
           {editTransaction.amount !== undefined && (
             <Button variant="contained" type="submit">
               Update
@@ -113,11 +144,8 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
               Submit
             </Button>
           )}
-        
-        </form>
+        </Box>
       </CardContent>
     </Card>
   );
 }
-
-

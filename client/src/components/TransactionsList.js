@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import dayjs from "dayjs";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Cookies from "js-cookie";
 
 import * as React from "react";
 
@@ -21,9 +22,14 @@ export default function TransactionsList({
   setEdittransaction,
 }) {
   async function remove(_id) {
+    const token = Cookies.get('token')
     if (!window.confirm("Are you sure  to delete this file ")) return;
     const res = await fetch(`${process.env.REACT_APP_API_URL}/transaction/${_id}`, {
       method: "DELETE",
+      headers: {
+        // "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (res.ok) {
       fetchTransction();

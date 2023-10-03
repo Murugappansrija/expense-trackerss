@@ -25,7 +25,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { Container } from "@mui/material";
-import Cookies from "js-cookie";
+
 
 import * as React from "react";
 
@@ -41,7 +41,7 @@ export default function Categories() {
     return dayjs(date).format("DD-MMM-YYYY");
   }
   async function remove(id){
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/category`,{
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/category/${id}`,{
         method:'DELETE',
         headers:{
             Authorization: `Bearer ${token}`,

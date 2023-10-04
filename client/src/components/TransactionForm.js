@@ -88,7 +88,7 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
             sx={{ marginRight: 5 }}
             size="small"
             id="outlined-basic"
-            label="Amount"
+                        label="Amount"
             variant="outlined"
             value={form.amount}
             onChange={handleChange}

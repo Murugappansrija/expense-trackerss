@@ -23,22 +23,30 @@ import dayjs from "dayjs";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Cookies from "js-cookie";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Container } from "@mui/material";
+import { getUser } from "../store/auth";
+import CategoryForm from "../components/categoryForm";
 
+import { useState } from "react";
 
 import * as React from "react";
 
 export default function Categories() {
     const token = Cookies.get('token')
+    const dispatch = useDispatch()
+    const[editCategory,setEditCategory] = useState({})
   const user = useSelector((state) => state.auth.user);
-  function categoryName(id) {
-    const category = user.categories.find((category) => category._id === id);
-    return category ? category.label : "NA";
-  }
+  // function categoryName(id) {
+  //   const category = user.categories.find((category) => category._id === id);
+  //   return category ? category.label : "NA";
+  // }
 
-  function formatDate(date) {
-    return dayjs(date).format("DD-MMM-YYYY");
+  // function formatDate(date) {
+  //   return dayjs(date).format("DD-MMM-YYYY");
+  // }
+  function setEdit(category){
+   setEditCategory(category)
   }
   async function remove(id){
       const res = await fetch(`${process.env.REACT_APP_API_URL}/category/${id}`,{
@@ -47,9 +55,14 @@ export default function Categories() {
             Authorization: `Bearer ${token}`,
         }
       })
+      if(res.ok){
+        const _user = {...user, categories:user.categories.filter((cat)=> cat._id != id)}
+        dispatch(getUser({user : _user}))
+      }
   }
   return (
     <Container>
+      <CategoryForm editCategory={editCategory} />
       <Typography sx={{ marginTop: 10 }} variant="h6">
         List of Categories
       </Typography>
@@ -80,7 +93,7 @@ export default function Categories() {
                   <IconButton
                     color="primary"
                     component="label"
-                    // onClick={() => setEdittransaction(row)}
+                    onClick={() => setEdit(row)}
                   >
                     <EditIcon />
                   </IconButton>

@@ -21,7 +21,9 @@ const initialForm = {
 };
 
 export default function TransactionForm({ fetchTransction, editTransaction }) {
-  const {categories} = useSelector(state=>state.auth.user)
+  
+  const { categories } = useSelector((state) => state.auth.user);
+  console.log(categories)
   const token = Cookies.get("token");
   const [form, setForm] = useState(initialForm);
   
@@ -88,7 +90,7 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
             sx={{ marginRight: 5 }}
             size="small"
             id="outlined-basic"
-                        label="Amount"
+            label="Amount"
             variant="outlined"
             value={form.amount}
             onChange={handleChange}
@@ -104,6 +106,20 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
             value={form.description}
             onChange={handleChange}
           />
+           <Autocomplete
+            
+            value={getCategoryNameById()}
+            onChange={(event, newValue) => {
+              setForm({ ...form, category_id: newValue._id });
+            }}
+           
+            id="controllable-states-demo"
+            options={categories}
+            sx={{ width: 200 }}
+            renderInput={(params) => (
+              <TextField {...params} sx={{ marginTop: 5 }} size="small" label="Category"  />
+            )}
+          />
           <LocalizationProvider dateAdapter={AdapterDayjs}  >
             <DemoContainer   components={["DesktopDatePicker"]} />
 
@@ -116,23 +132,9 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
               />
             </DemoItem>
           </LocalizationProvider>
-          <Autocomplete
-            // value={form.category_id}
-            value={getCategoryNameById()}
-            onChange={(event, newValue) => {
-              setForm({ ...form, category_id: newValue._id });
-            }}
-            // inputValue={form.category}
-            // onInputChange={(event, newInputValue) => {
-            //   setInputValue(newInputValue);
-            // }}
-            id="controllable-states-demo"
-            options={categories}
-            sx={{ width: 200 }}
-            renderInput={(params) => (
-              <TextField {...params} sx={{ marginRight: 5 }} size="small" label="Category"  />
-            )}
-          />
+         
+    
+
           {editTransaction.amount !== undefined && (
             <Button variant="contained" type="submit">
               Update

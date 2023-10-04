@@ -3,6 +3,7 @@ import { Container } from "@mui/material";
 import TransactionForm from "../components/TransactionForm";
 import TransactionsList from "../components/TransactionsList";
 import Cookies from 'js-cookie'
+import TransactionChart from '../components/TransactionChart'
 
 const Home = () => {
     const [transactions, setTransactions] = useState([]);
@@ -26,6 +27,7 @@ const Home = () => {
  
   return (
     <Container>
+      <TransactionChart/>
         <TransactionForm
           fetchTransction={fetchTransction}
           editTransaction={editTransaction}

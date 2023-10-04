@@ -27,13 +27,13 @@ const Home = () => {
  
   return (
     <Container>
-      <TransactionChart/>
+      <TransactionChart data={transactions}/>
         <TransactionForm
           fetchTransction={fetchTransction}
           editTransaction={editTransaction}
         />
         <TransactionsList
-          transactions={transactions}
+          data={transactions}
           fetchTransction={fetchTransction}
           setEdittransaction={setEdittransaction}
         />

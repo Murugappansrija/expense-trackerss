@@ -19,25 +19,28 @@ import { Container } from "@mui/material";
 import * as React from "react";
 
 export default function TransactionsList({
-  transactions,
+  data,
   fetchTransction,
   setEdittransaction,
 }) {
-  const user = useSelector(state=>state.auth.user)
-  function categoryName(id){
-    const category = user.categories.find((category)=>category._id === id)
-      return  category ? category.label: 'NA'
+  const user = useSelector((state) => state.auth.user);
+  function categoryName(id) {
+    const category = user.categories.find((category) => category._id === id);
+    return category ? category.label : "NA";
   }
   async function remove(_id) {
-    const token = Cookies.get('token')
+    const token = Cookies.get("token");
     if (!window.confirm("Are you sure  to delete this file ")) return;
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/transaction/${_id}`, {
-      method: "DELETE",
-      headers: {
-        // "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/transaction/${_id}`,
+      {
+        method: "DELETE",
+        headers: {
+          // "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (res.ok) {
       fetchTransction();
       window.alert("Deleted successfully");
@@ -47,7 +50,7 @@ export default function TransactionsList({
     return dayjs(date).format("DD-MMM-YYYY");
   }
   return (
-    <Container >
+    <>
       <Typography sx={{ marginTop: 10 }} variant="h6">
         List of Transactions
       </Typography>
@@ -56,9 +59,9 @@ export default function TransactionsList({
           <TableHead>
             <TableRow>
               <TableCell align="center">Amount</TableCell>
-             
+
               <TableCell align="center">Description</TableCell>
-              
+
               <TableCell align="center">Category</TableCell>
 
               <TableCell align="center">Date</TableCell>
@@ -66,11 +69,14 @@ export default function TransactionsList({
             </TableRow>
           </TableHead>
           <TableBody>
-            {transactions.map((row) => (
-              <TableRow
-                key={row._id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
+            {/* {data.map((month)=>(
+              month. transactions.map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+            
+           
                 <TableCell align="center" component="th" scope="row">
                   {row.amount}
                 </TableCell>
@@ -91,10 +97,45 @@ export default function TransactionsList({
                   </IconButton>
                 </TableCell>
               </TableRow>
-            ))}
+            ))
+            )} */}
+            {data.map((month) =>
+              month.transactions.map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell align="center" component="th" scope="row">
+                    {row.amount}
+                  </TableCell>
+                  <TableCell align="center">{row.description}</TableCell>
+                  <TableCell align="center">
+                    {categoryName(row.category_id)}
+                  </TableCell>
+                  <TableCell align="center">{formatDate(row.date)}</TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      color="primary"
+                      component="label"
+                      onClick={() => setEdittransaction(row)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+
+                    <IconButton
+                      color="warning"
+                      component="label"
+                      onClick={() => remove(row._id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-    </Container>
+    </>
   );
 }

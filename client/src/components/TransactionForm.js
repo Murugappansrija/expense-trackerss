@@ -95,6 +95,7 @@ export default function TransactionForm({ fetchTransction, editTransaction }) {
             value={form.amount}
             onChange={handleChange}
             name="amount"
+            type="number"
           />
           <TextField
             sx={{ marginRight: 5 }}
